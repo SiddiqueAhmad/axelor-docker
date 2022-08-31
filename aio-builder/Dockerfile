@@ -8,11 +8,12 @@ RUN set -ex \
 	&& apt-key adv --batch --fetch-keys https://deb.nodesource.com/gpgkey/nodesource.gpg.key \
 	&& echo 'deb https://deb.nodesource.com/node_8.x bionic main' > /etc/apt/sources.list.d/nodesource.list \
 	&& apt-key adv --batch --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg \
-	&& echo 'deb https://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list \
 	&& DEBIAN_FRONTEND=noninteractive apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y \
-		git-core nodejs yarn \
+		git-core \
+  && curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+  && apt-get install -y nodejs  \
 	&& rm -rf /var/lib/apt/lists/*
 
 # update locale
@@ -32,14 +33,14 @@ RUN set -ex \
 RUN \
   set -ex && \
   mkdir -p /app/src && cd /app/src && \
-  git clone https://github.com/axelor/axelor-development-kit.git && \
-  cd axelor-development-kit && \
+  git clone -b 5.4 https://github.com/axelor/axelor-open-platform.git && \
+  cd axelor-open-platform && \
   ./gradlew --no-daemon -x test build
 
 RUN \
   set -ex && \
   cd /app/src && \
-  git clone https://github.com/axelor/abs-webapp.git axelor-erp && \
+  git clone https://github.com/axelor/open-suite-webapp.git axelor-erp && \
   sed -e 's|git@github.com:|https://github.com/|' -i axelor-erp/.gitmodules && \
   cd axelor-erp && \
   git checkout master && \
