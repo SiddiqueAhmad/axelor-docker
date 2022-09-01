@@ -10,10 +10,9 @@ RUN set -ex \
 	&& apt-key adv --batch --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg \
 	&& DEBIAN_FRONTEND=noninteractive apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
-	&& DEBIAN_FRONTEND=noninteractive apt-get install -y \
-		git-core \
-  && curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-  && apt-get install -y nodejs  \
+	&& DEBIAN_FRONTEND=noninteractive apt-get install -y git-core \
+        && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+  	&& apt-get install -y nodejs  \
 	&& rm -rf /var/lib/apt/lists/*
 
 # update locale
